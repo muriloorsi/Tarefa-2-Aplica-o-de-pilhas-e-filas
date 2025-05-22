@@ -1,0 +1,19 @@
+ADD doc1.pdf alice
+ADD doc2.pdf bob
+ADD doc3.pdf carol
+STATUS
+QUERY doc2.pdf
+REPRINT
+STATUS
+ADD doc4.pdf dave
+REPRINT
+REPRINT
+STATUS
+REPRINT
+STATUS
+ADD doc6.pdf dave
+ADD doc7.pdf dave
+ADD doc8.pdf alice
+ADD doc9.pdf bob
+ADD doc10.pdf bob
+ADD doc11.pdf carol
