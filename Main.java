@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.Scanner;
 
 public class Main {
+    private static PilhaReimpressao pilhaReimpressao = new PilhaReimpressao(5);
+
     public static void main(String[] args) {
         FilaImpressao fila = new FilaImpressao(10);
         Scanner scanner = new Scanner(System.in);
@@ -27,7 +29,7 @@ public class Main {
 
         String comando;
         do {
-            System.out.println("\nComando: [imprimir|relatorio|consultar <nomeArquivo>|adicionar <nomeArquivo>,<usuario>|sair]");
+            System.out.println("\nComando: [imprimir|relatorio|consultar <nomeArquivo>|adicionar <nomeArquivo>,<usuario>|solicitar <nomeArquivo>,<usuario>|reimprimir|consultarReimpressao <nomeArquivo>|relatorioReimpressao|sair]");
             comando = scanner.nextLine().trim();
             if (comando.isEmpty()) continue;
             String[] cmd = comando.split(" ", 2);
@@ -56,6 +58,43 @@ public class Main {
                             fila.adicionar(dados[0].trim(), dados[1].trim());
                         }
                     }
+                    break;
+                case "solicitar":
+                    if (cmd.length < 2 || !cmd[1].contains(",")) {
+                        System.out.println("Uso: solicitar <nomeArquivo>,<usuario>");
+                    } else {
+                        String[] dados = cmd[1].split(",");
+                        if (dados.length < 2) {
+                            System.out.println("Uso: solicitar <nomeArquivo>,<usuario>");
+                        } else {
+                            try {
+                                Documento doc = new Documento(dados[0].trim(), dados[1].trim(), LocalDateTime.now());
+                                pilhaReimpressao.empilhar(doc);
+                                System.out.println("Solicitação de reimpressão adicionada: " + doc);
+                            } catch (RuntimeException e) {
+                                System.out.println("Erro: " + e.getMessage());
+                            }
+                        }
+                    }
+                    break;
+                case "reimprimir":
+                    try {
+                        Documento doc = pilhaReimpressao.desempilhar();
+                        doc.registrarImpressao();
+                        System.out.println("Reimpresso: " + doc.getNomeArquivo() + ", Tempo de espera = " + doc.calcularTempoEsperaSegundos() + "s");
+                    } catch (RuntimeException e) {
+                        System.out.println("Erro: " + e.getMessage());
+                    }
+                    break;
+                case "consultarReimpressao":
+                    if (cmd.length < 2 || cmd[1].isEmpty()) {
+                        System.out.println("Uso: consultarReimpressao <nomeArquivo>");
+                    } else {
+                        pilhaReimpressao.consultar(cmd[1].trim());
+                    }
+                    break;
+                case "relatorioReimpressao":
+                    pilhaReimpressao.relatorio();
                     break;
                 case "sair":
                     break;

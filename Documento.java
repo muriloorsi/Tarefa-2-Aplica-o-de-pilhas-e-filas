@@ -40,8 +40,9 @@ public class Documento {
 
     @Override
     public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return String.format("%s (Usuário: %s, Solicitado em: %s)",
-                nomeArquivo, nomeUsuario, horaSolicitacao);
+                nomeArquivo, nomeUsuario, horaSolicitacao.format(formatter));
     }
 
     public static LocalDateTime parseHora(String hora) {

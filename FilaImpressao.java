@@ -11,7 +11,9 @@ public class FilaImpressao {
     public FilaImpressao(int capacidade) {
         this.capacidadeMax = capacidade;
         this.dados = new Documento[capacidade];
-        this.primeiro = this.ultimo = this.ocupacao = 0;
+        this.primeiro = 0;
+        this.ultimo = 0;
+        this.ocupacao = 0;
     }
 
     public FilaImpressao() {
@@ -32,7 +34,7 @@ public class FilaImpressao {
 
     public void enfileirar(Documento doc) {
         if (estaCheia()) {
-            throw new RuntimeException("Não é permitido mais de 10 documentos na fila");
+            throw new RuntimeException("Não é permitido mais de " + capacidadeMax + " documentos na fila");
         }
         dados[ultimo] = doc;
         ultimo = proxima(ultimo);
@@ -41,7 +43,7 @@ public class FilaImpressao {
 
     public void imprimir() {
         if (estaVazia()) {
-            System.out.println("Não a mais documentos para imprimir");
+            System.out.println("Não há mais documentos para imprimir");
             return;
         }
         Documento doc = dados[primeiro];
@@ -65,7 +67,7 @@ public class FilaImpressao {
     public void relatorio() {
         System.out.println("--- Fila de Impressão (ocupação: " + ocupacao + "/" + capacidadeMax + ") ---");
         if (estaVazia()) {
-            System.out.println("Não a mais documentos para imprimir");
+            System.out.println("Não há documentos na fila");
         } else {
             for (int i = 0, idx = primeiro; i < ocupacao; i++, idx = proxima(idx)) {
                 System.out.println((i+1) + ". " + dados[idx]);
